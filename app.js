@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = "https://gocab-atsk.vercel.app/";
+const API_BASE_URL = "https://gocab-atsk.vercel.app";
 
 // Company Data
 const companyData = {

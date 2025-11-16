@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Go Cab - Your Journey, Our Passion</title>
+    <meta
+      name="description"
+      content="Premium cab services across Jharkhand with professional drivers and comfortable vehicles"
+    />
+
+    <!-- React CDN - Fixed versions -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+              poppins: ["Poppins", "sans-serif"],
+            },
+            colors: {
+              primary: {
+                50: "#eff6ff",
+                100: "#dbeafe",
+                200: "#bfdbfe",
+                300: "#93c5fd",
+                400: "#60a5fa",
+                500: "#3b82f6",
+                600: "#2563eb",
+                700: "#1d4ed8",
+                800: "#1e40af",
+                900: "#1e3a8a",
+              },
+              accent: {
+                50: "#fefce8",
+                100: "#fef3c7",
+                200: "#fde68a",
+                300: "#fcd34d",
+                400: "#fbbf24",
+                500: "#f59e0b",
+                600: "#d97706",
+                700: "#b45309",
+                800: "#92400e",
+                900: "#78350f",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Custom CSS for Navbar and Placeholders -->
+    <style>
+      /* Plain white placeholders */
+      input::placeholder,
+      select::placeholder,
+      textarea::placeholder {
+        color: white !important;
+        opacity: 1 !important;
+      }
+
+      /* Navbar logo colors with smooth transition */
+      .navbar-logo {
+        transition: color 0.3s ease !important;
+      }
+
+      .navbar-light .navbar-logo {
+        color: #3b82f6 !important; /* Blue on light background */
+      }
+
+      .navbar-dark .navbar-logo {
+        color: white !important; /* White on dark background */
+      }
+
+      /* Ensure navbar has smooth transition */
+      #navbar {
+        transition: all 0.3s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Dynamic Navbar Color Script -->
+    <script>
+      // Change navbar logo color based on scroll position
+      document.addEventListener("DOMContentLoaded", () => {
+        const navbar = document.querySelector("nav"); // Will target the navbar from React
+
+        const updateNavbarColor = () => {
+          const scrollY = window.scrollY;
+          const contactSection = document.getElementById("contact");
+
+          if (contactSection) {
+            const contactTop = contactSection.offsetTop;
+
+            if (scrollY >= contactTop - 100) {
+              // On contact section (blue background) - make logo white
+              navbar?.classList.remove("navbar-light");
+              navbar?.classList.add("navbar-dark");
+            } else {
+              // On other sections (white background) - make logo blue
+              navbar?.classList.remove("navbar-dark");
+              navbar?.classList.add("navbar-light");
+            }
+          }
+        };
+
+        // Add scroll listener
+        window.addEventListener("scroll", updateNavbarColor);
+
+        // Initial check after a short delay to ensure React has rendered
+        setTimeout(updateNavbarColor, 100);
+      });
+    </script>
+
+    <script type="text/babel" src="app.js"></script>
+  </body>
+</html>

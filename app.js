@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = "gocab-ten.vercel.app";
+const API_BASE_URL = "https://gocab.co";
 
 // Company Data
 const companyData = {

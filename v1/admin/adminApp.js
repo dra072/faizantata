@@ -1,5 +1,5 @@
 // Admin API Configuration
-const ADMIN_API_BASE_URL = "gocab-ten.vercel.app";
+const ADMIN_API_BASE_URL = "https://gocab.co/";
 
 // Drag-and-drop image upload component
 const DropzoneField = ({ onDrop, file }) => {

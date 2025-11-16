@@ -1,5 +1,6 @@
 // API Configuration
-const API_BASE_URL = "https://gocab.co";
+const API_BASE_URL = "https://gocab-khaki.vercel.app";
+// const API_BASE_URL = "http://localhost:3000";
 
 // Company Data
 const companyData = {
@@ -150,21 +151,21 @@ const staticData = {
 
 // ULTIMATE Feature parsing function - handles ALL possible formats
 const parseServiceFeatures = (features) => {
-  console.log("🔧 parseServiceFeatures input:", features, typeof features);
+  // console.log("🔧 parseServiceFeatures input:", features, typeof features);
 
   // Return empty array if no features
   if (!features) {
-    console.log("❌ No features provided");
+    // console.log("❌ No features provided");
     return [];
   }
 
   // If already an array, process each element
   if (Array.isArray(features)) {
-    console.log("✅ Features is array, processing elements...");
+    // console.log("✅ Features is array, processing elements...");
 
     const processedFeatures = features
       .map((feature, index) => {
-        console.log(`🔧 Processing feature ${index}:`, feature, typeof feature);
+        // console.log(`🔧 Processing feature ${index}:`, feature, typeof feature);
 
         // If feature is already a string, return it
         if (typeof feature === "string") {
@@ -191,7 +192,7 @@ const parseServiceFeatures = (features) => {
       })
       .filter((f) => f && f.length > 0); // Remove empty strings
 
-    console.log("✅ Processed array features:", processedFeatures);
+    // console.log("✅ Processed array features:", processedFeatures);
     return processedFeatures;
   }
 
@@ -206,11 +207,11 @@ const parseServiceFeatures = (features) => {
         .replace(/&quot;/g, '"')
         .trim();
 
-      console.log("🧹 Cleaned features string:", cleanFeatures);
+      // console.log("🧹 Cleaned features string:", cleanFeatures);
 
       // Check if it's a JSON array string
       if (cleanFeatures.startsWith("[") && cleanFeatures.endsWith("]")) {
-        console.log("📋 Parsing as JSON array");
+        // console.log("📋 Parsing as JSON array");
         const parsed = JSON.parse(cleanFeatures);
         if (Array.isArray(parsed)) {
           // Recursively parse the array (in case it contains objects)
@@ -220,32 +221,32 @@ const parseServiceFeatures = (features) => {
 
       // Check if it's comma-separated
       if (cleanFeatures.includes(",")) {
-        console.log("📋 Parsing as comma-separated string");
+        // console.log("📋 Parsing as comma-separated string");
         const parsed = cleanFeatures
           .split(",")
           .map((f) => f.trim())
           .filter((f) => f.length > 0);
-        console.log("✅ Successfully parsed comma-separated:", parsed);
+        // console.log("✅ Successfully parsed comma-separated:", parsed);
         return parsed;
       }
 
       // Single feature
-      console.log("📋 Treating as single feature");
+      // console.log("📋 Treating as single feature");
       return [cleanFeatures];
     } catch (error) {
-      console.error("❌ Error parsing features string:", error);
+      // console.error("❌ Error parsing features string:", error);
       return [];
     }
   }
 
   // If it's an object, try to convert
   if (typeof features === "object") {
-    console.log("📋 Converting object to array");
+    // console.log("📋 Converting object to array");
     const values = Object.values(features).filter((f) => f);
     return parseServiceFeatures(values); // Recursively parse
   }
 
-  console.log("❌ Unknown features type, returning empty array");
+  // console.log("❌ Unknown features type, returning empty array");
   return [];
 };
 
@@ -253,7 +254,7 @@ const parseServiceFeatures = (features) => {
 const apiService = {
   getCategories: async () => {
     try {
-      console.log("Fetching categories from API...");
+      // console.log("Fetching categories from API...");
       const response = await fetch(
         `${API_BASE_URL}/api/categories?status=active`,
         {
@@ -270,21 +271,19 @@ const apiService = {
       }
 
       const data = await response.json();
-      console.log("✅ Categories loaded from API:", data);
+      // console.log("Categories loaded from API:", data);
       if (data.success && data.data) {
         return { success: true, data: data.data };
       }
       return data;
     } catch (error) {
-      console.error("API Error - Categories:", error);
-      console.log("📦 Using static categories as fallback");
       return { success: true, data: staticData.categories };
     }
   },
 
   getServicesByCategory: async (categorySlug) => {
     try {
-      console.log(`Fetching services for category: ${categorySlug}`);
+      // console.log(`Fetching services for category: ${categorySlug}`);
       const response = await fetch(
         `${API_BASE_URL}/api/services/category/${categorySlug}`,
         {
@@ -301,33 +300,33 @@ const apiService = {
       }
 
       const data = await response.json();
-      console.log(`Services API response for ${categorySlug}:`, data);
+      // console.log(`Services API response for ${categorySlug}:`, data);
 
       // CRITICAL: Process the data to ensure features are properly parsed
       if (data.success && data.data) {
-        console.log("Processing services data to fix features...");
+        // console.log("Processing services data to fix features...");
 
         const processedServices = data.data.map((service, index) => {
-          console.log(`Processing service ${index + 1}:`, service.name);
-          console.log(
-            `Raw features:`,
-            service.features,
-            typeof service.features
-          );
+          // console.log(`Processing service ${index + 1}:`, service.name);
+          // console.log(
+          //   `Raw features:`,
+          //   service.features,
+          //   typeof service.features
+          // );
 
           const processed = { ...service };
 
           // Parse features using our ULTIMATE function
           processed.features = parseServiceFeatures(service.features);
 
-          console.log(
-            `✅ Final processed features for ${service.name}:`,
-            processed.features
-          );
+          // console.log(
+          //   `✅ Final processed features for ${service.name}:`,
+          //   processed.features
+          // );
           return processed;
         });
 
-        console.log("✅ All services processed successfully");
+        // console.log("✅ All services processed successfully");
 
         return {
           success: true,
@@ -338,8 +337,8 @@ const apiService = {
 
       return data;
     } catch (error) {
-      console.error(`API Error - Services for ${categorySlug}:`, error);
-      console.log("Using static services as fallback");
+      // console.error(`API Error - Services for ${categorySlug}:`, error);
+      // console.log("Using static services as fallback");
       return {
         success: true,
         data: staticData.services[categorySlug] || [],
@@ -355,7 +354,7 @@ const apiService = {
 
   submitContact: async (contactData) => {
     try {
-      console.log("🔄 Submitting contact form...");
+      // console.log("🔄 Submitting contact form...");
       const response = await fetch(`${API_BASE_URL}/api/contacts`, {
         method: "POST",
         headers: {
@@ -370,10 +369,10 @@ const apiService = {
       }
 
       const data = await response.json();
-      console.log("✅ Contact form submitted successfully:", data);
+      // console.log("✅ Contact form submitted successfully:", data);
       return data;
     } catch (error) {
-      console.error("❌ Contact form submission failed:", error);
+      // console.error("❌ Contact form submission failed:", error);
       return {
         success: false,
         message:
@@ -701,7 +700,7 @@ const ServiceModal = ({ category, services, isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  console.log("🔍 ServiceModal - Services data:", services);
+  // console.log("🔍 ServiceModal - Services data:", services);
 
   return React.createElement(
     "div",
@@ -769,19 +768,19 @@ const ServiceModal = ({ category, services, isOpen, onClose }) => {
           "div",
           { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" },
           services.map((service, index) => {
-            console.log(`🔧 ServiceModal - Processing ${service.name}`);
-            console.log(
-              `📋 Service features:`,
-              service.features,
-              typeof service.features
-            );
+            // console.log(`🔧 ServiceModal - Processing ${service.name}`);
+            // console.log(
+            //   `📋 Service features:`,
+            //   service.features,
+            //   typeof service.features
+            // );
 
             // FINAL ROBUST PARSING - This should handle everything including objects
             let serviceFeatures = [];
 
             if (service.features) {
               serviceFeatures = parseServiceFeatures(service.features);
-              console.log(`✅ Final features for modal:`, serviceFeatures);
+              // console.log(`✅ Final features for modal:`, serviceFeatures);
             }
 
             return React.createElement(
@@ -851,7 +850,7 @@ const ServiceModal = ({ category, services, isOpen, onClose }) => {
                     "div",
                     { className: "flex flex-wrap gap-2" },
                     serviceFeatures.map((feature, idx) => {
-                      console.log(`🏷️ Rendering feature badge:`, feature);
+                      // console.log(`🏷️ Rendering feature badge:`, feature);
                       return React.createElement(
                         "span",
                         {
@@ -933,14 +932,14 @@ const ServicesSection = () => {
 
           // Load services for each category
           const servicesPromises = enrichedCategories.map(async (category) => {
-            console.log(`Loading services for category: ${category.slug}`);
+            // console.log(`Loading services for category: ${category.slug}`);
             const servicesResult = await apiService.getServicesByCategory(
               category.slug
             );
-            console.log(
-              `📋 Services result for ${category.slug}:`,
-              servicesResult
-            );
+            // console.log(
+            //   `📋 Services result for ${category.slug}:`,
+            //   servicesResult
+            // );
 
             return {
               categorySlug: category.slug,
@@ -951,18 +950,18 @@ const ServicesSection = () => {
           const servicesResults = await Promise.all(servicesPromises);
           const servicesMap = {};
           servicesResults.forEach(({ categorySlug, services }) => {
-            console.log(`📦 Storing services for ${categorySlug}:`, services);
+            // console.log(`📦 Storing services for ${categorySlug}:`, services);
             servicesMap[categorySlug] = services;
           });
 
-          console.log("🗂️ Final services map:", servicesMap);
+          // console.log("🗂️ Final services map:", servicesMap);
           setServices(servicesMap);
         } else {
           setCategories(staticData.categories);
           setServices(staticData.services);
         }
       } catch (error) {
-        console.error("Error loading categories:", error);
+        // console.error("Error loading categories:", error);
         setCategories(staticData.categories);
         setServices(staticData.services);
       }
@@ -973,8 +972,8 @@ const ServicesSection = () => {
   }, []);
 
   const handleCategoryClick = (category) => {
-    console.log("🖱️ Category clicked:", category.name);
-    console.log("📋 Services for category:", services[category.slug]);
+    // console.log("🖱️ Category clicked:", category.name);
+    // console.log("📋 Services for category:", services[category.slug]);
     setSelectedCategory(category);
     setModalOpen(true);
   };
@@ -1832,12 +1831,12 @@ const FloatingButtons = () => {
 // Main App Component
 const App = () => {
   React.useEffect(() => {
-    console.log("🚀 Go Cab App Started");
-    console.log("📡 API Base URL:", API_BASE_URL);
+    // console.log("🚀 Go Cab App Started");
+    // console.log("📡 API Base URL:", API_BASE_URL);
 
     fetch(`${API_BASE_URL}/api/health`)
       .then((response) => response.json())
-      .then((data) => console.log("✅ Backend Health Check:", data))
+      .then((data) => console.log("Backend Health Check:", data))
       .catch((error) =>
         console.log("⚠️ Backend not reachable:", error.message)
       );

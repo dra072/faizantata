@@ -1,17 +1,8 @@
 {
   "version": 2,
   "routes": [
-    {
-      "src": "^/v1/admin(/)?$",
-      "dest": "/admin/index.html"
-    },
-    {
-      "src": "^/admin(/)?$",
-      "dest": "/admin/index.html"
-    },
-    {
-      "src": "^(.*)$",
-      "dest": "/index.html"
-    }
+    { "src": "^/v1/admin$", "dest": "/admin/index.html" },
+    { "src": "^/admin$", "dest": "/admin/index.html" },
+     { "src": "^/$", "dest": "/index.html" }
   ]
 }
